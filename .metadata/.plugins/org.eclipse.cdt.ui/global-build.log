@@ -2,3 +2,11 @@
 make -j12 all 
 qcc -Vgcc_ntox86 -c -Wp,-MMD,build/x86-debug/src/des_display.d,-MT,build/x86-debug/src/des_display.o -o build/x86-debug/src/des_display.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_display.c
 qcc -Vgcc_ntox86 -o build/x86-debug/des_display   build/x86-debug/src/des_display.o  
+10:45:17 **** Build of configuration x86-debug for project des_controller ****
+make -j12 all 
+qcc -Vgcc_ntox86 -c -Wp,-MMD,build/x86-debug/src/des_controller.d,-MT,build/x86-debug/src/des_controller.o -o build/x86-debug/src/des_controller.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_controller.c
+qcc -Vgcc_ntox86 -o build/x86-debug/des_controller   build/x86-debug/src/des_controller.o  
+10:49:46 **** Build of configuration x86-debug for project des_inputs ****
+make -j12 all 
+qcc -Vgcc_ntox86 -c -Wp,-MMD,build/x86-debug/src/des_inputs.d,-MT,build/x86-debug/src/des_inputs.o -o build/x86-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86 -o build/x86-debug/des_inputs   build/x86-debug/src/des_inputs.o  

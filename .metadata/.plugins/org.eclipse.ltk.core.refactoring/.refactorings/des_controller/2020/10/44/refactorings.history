@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;des_controller/src/des_mva&apos; to &apos;des_mva.h&apos;" description="Rename resource &apos;des_mva&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/des_mva" name="des_mva.h" stamp="1604070365013" updateReferences="true"/>
+</session>

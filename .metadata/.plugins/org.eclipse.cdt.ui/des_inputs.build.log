@@ -1,0 +1,7 @@
+10:49:46 **** Build of configuration x86-debug for project des_inputs ****
+make -j12 all 
+qcc -Vgcc_ntox86 -c -Wp,-MMD,build/x86-debug/src/des_inputs.d,-MT,build/x86-debug/src/des_inputs.o -o build/x86-debug/src/des_inputs.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_inputs.c
+qcc -Vgcc_ntox86 -o build/x86-debug/des_inputs   build/x86-debug/src/des_inputs.o  
+
+10:49:47 Build Finished (took 191ms)
+
