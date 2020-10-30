@@ -64,7 +64,6 @@ int main(int argc, char **argv) {
 		case "exit":
 			//break loop
 		}
-
 	}
 
 //	if (MsgSend(coid, &msg_send, sizeof(msg_send), &msg_receive,

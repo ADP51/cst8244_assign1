@@ -13,7 +13,6 @@ int main(int argc, char **argv) {
 	int controller_pid = 0;
 	int coid;
 	char input[10];
-	int person_id = 0;
 
 	if (argc != 5) {
 		perror("Incorrect number of command line args");
@@ -34,14 +33,8 @@ int main(int argc, char **argv) {
 
 		switch (input){
 		case "ls":
-			printf("Enter id: \n");
-			scanf("%d", &person_id);
-
 			break;
 		case "rs":
-			printf("Enter id: \n");
-			scanf("%d", &person_id);
-
 			break;
 		case "glu":
 			break;
@@ -61,30 +54,26 @@ int main(int argc, char **argv) {
 			break;
 		case "grl":
 			break;
-		case "exit":
-			//break loop
 		}
+	}
+
+	if (MsgSend(coid, &msg_send, sizeof(msg_send), &msg_receive,
+			sizeof(msg_receive)) == -1) {
+		printf("Cannot connect attached to process id %d", pid);
 
 	}
 
-//	if (MsgSend(coid, &msg_send, sizeof(msg_send), &msg_receive,
-//			sizeof(msg_receive)) == -1) {
-//		printf("Cannot connect attached to process id %d", pid);
-//
-//	}
-//
-//	MsgReceive(1, &msg_receive, sizeof(msg_receive), NULL);
-//
-//	if (msg_receive.statusCode != SRVR_OK) {
-//		printf(msg_receive.errorMsg);
-//		return EXIT_FAILURE;
-//	}
-//
-//	printf("The server has calculated the result of %d %c %d as %.2f",
-//			msg_send.left_hand, msg_send.operator, msg_send.right_hand,
-//			msg_receive.answer);
+	MsgReceive(1, &msg_receive, sizeof(msg_receive), NULL);
 
-	ConnectDetach(coid);
+	if (msg_receive.statusCode != SRVR_OK) {
+		printf(msg_receive.errorMsg);
+		return EXIT_FAILURE;
+	}
+
+	printf("The server has calculated the result of %d %c %d as %.2f",
+			msg_send.left_hand, msg_send.operator, msg_send.right_hand,
+			msg_receive.answer);
+
 	return EXIT_SUCCESS;
 }
 

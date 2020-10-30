@@ -13,7 +13,6 @@ int main(int argc, char **argv) {
 	int controller_pid = 0;
 	int coid;
 	char input[10];
-	int person_id = 0;
 
 	if (argc != 5) {
 		perror("Incorrect number of command line args");
@@ -34,14 +33,11 @@ int main(int argc, char **argv) {
 
 		switch (input){
 		case "ls":
-			printf("Enter id: \n");
+			int person_id = 0;
 			scanf("%d", &person_id);
 
 			break;
 		case "rs":
-			printf("Enter id: \n");
-			scanf("%d", &person_id);
-
 			break;
 		case "glu":
 			break;
@@ -64,7 +60,6 @@ int main(int argc, char **argv) {
 		case "exit":
 			//break loop
 		}
-
 	}
 
 //	if (MsgSend(coid, &msg_send, sizeof(msg_send), &msg_receive,
