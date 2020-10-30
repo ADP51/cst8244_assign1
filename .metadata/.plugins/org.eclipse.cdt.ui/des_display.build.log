@@ -1,0 +1,7 @@
+10:32:09 **** Build of configuration x86-debug for project des_display ****
+make -j12 all 
+qcc -Vgcc_ntox86 -c -Wp,-MMD,build/x86-debug/src/des_display.d,-MT,build/x86-debug/src/des_display.o -o build/x86-debug/src/des_display.o  -Wall -fmessage-length=0 -g -O0 -fno-builtin  src/des_display.c
+qcc -Vgcc_ntox86 -o build/x86-debug/des_display   build/x86-debug/src/des_display.o  
+
+10:32:09 Build Finished (took 189ms)
+
