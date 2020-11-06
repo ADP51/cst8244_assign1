@@ -34,3 +34,27 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\andre\O
 
 !ENTRY org.eclipse.cdt.core 1 0 2020-10-30 10:49:47.360
 !MESSAGE Indexed 'des_inputs' (1 sources, 16 headers) in 0.066 sec: 1,161 declarations; 1,004 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.egit.ui 4 0 2020-11-06 09:15:50.098
+!MESSAGE Checkout conflict with files: 
+des_inputs/src/des_inputs.c
+!STACK 0
+org.eclipse.jgit.api.errors.CheckoutConflictException: Checkout conflict with files: 
+des_inputs/src/des_inputs.c
+	at org.eclipse.jgit.api.MergeCommand.call(MergeCommand.java:420)
+	at org.eclipse.jgit.api.PullCommand.call(PullCommand.java:345)
+	at org.eclipse.egit.core.op.PullOperation$1.run(PullOperation.java:200)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2240)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2267)
+	at org.eclipse.egit.core.op.PullOperation.execute(PullOperation.java:232)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI.execute(PullOperationUI.java:176)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI.access$0(PullOperationUI.java:168)
+	at org.eclipse.egit.ui.internal.pull.PullOperationUI$1.runInWorkspace(PullOperationUI.java:141)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:39)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: org.eclipse.jgit.errors.CheckoutConflictException: Checkout conflict with files: 
+des_inputs/src/des_inputs.c
+	at org.eclipse.jgit.dircache.DirCacheCheckout.doCheckout(DirCacheCheckout.java:467)
+	at org.eclipse.jgit.dircache.DirCacheCheckout.checkout(DirCacheCheckout.java:449)
+	at org.eclipse.jgit.api.MergeCommand.call(MergeCommand.java:293)
+	... 10 more

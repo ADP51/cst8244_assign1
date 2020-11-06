@@ -3,6 +3,8 @@
 	<name>des_inputs</name>
 	<comment></comment>
 	<projects>
+		<project>des_controller</project>
+		<project>des_display</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

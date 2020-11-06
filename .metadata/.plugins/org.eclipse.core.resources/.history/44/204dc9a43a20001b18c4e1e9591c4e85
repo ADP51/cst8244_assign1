@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <process.h>
+#include <string.h>
+#include <errno.h>
+#include <sys/neutrino.h>
+#include <sys/netmgr.h>
+#include "../../des_controller/src/des_mva.h"
+
+int main(int argc, char **argv) {
+	client_send_t msg_send;
+	server_response_t msg_receive;
+	int controller_pid = 0;
+	int coid;
+	char input[10];
+	int person_id = 0;
+
+	if (argc != 5) {
+		perror("Incorrect number of command line args");
+		return EXIT_FAILURE;
+	}
+
+	contoller_pid = atoi(argv[1]);
+
+	coid = ConnectAttach(ND_LOCAL_NODE, controller_pid, 1, _NTO_SIDE_CHANNEL, 0);
+	if (coid == -1) {
+		printf("Cannot connect attached to process id %d", pid);
+		return EXIT_FAILURE;
+	}
+
+	while(1){
+		printf("Please enter command: \n");
+		scanf("%[^\n]%*c", input);
+
+		switch (input){
+		case "ls":
+			printf("Enter id: \n");
+			scanf("%d", &person_id);
+			break;
+		case "rs":
+			printf("Enter id: \n");
+			scanf("%d", &person_id);
+			break;
+		case "ws":
+			printf("Enter weight: \n");
+
+			break;
+		case "exit":
+			//break loop
+		}
+
+	}
+
+//	if (MsgSend(coid, &msg_send, sizeof(msg_send), &msg_receive,
+//			sizeof(msg_receive)) == -1) {
+//		printf("Cannot connect attached to process id %d", pid);
+//
+//	}
+//
+//	MsgReceive(1, &msg_receive, sizeof(msg_receive), NULL);
+//
+//	if (msg_receive.statusCode != SRVR_OK) {
+//		printf(msg_receive.errorMsg);
+//		return EXIT_FAILURE;
+//	}
+//
+//	printf("The server has calculated the result of %d %c %d as %.2f",
+//			msg_send.left_hand, msg_send.operator, msg_send.right_hand,
+//			msg_receive.answer);
+
+	ConnectDetach(coid);
+	return EXIT_SUCCESS;
+}
+
