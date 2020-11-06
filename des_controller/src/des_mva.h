@@ -35,7 +35,6 @@ typedef enum {
 
 #define NUM_OUTPUTS 13
 typedef enum {
-    START_MSG =				0,
 	READY_MSG = 			1,
 	LS_MSG =			2,
 	RS_MSG =			3,
@@ -51,33 +50,32 @@ typedef enum {
 } Output;
 
 const char *outMessage[NUM_OUTPUTS] = {
-		"Controller PID: ",
-		"Ready for Entry",
-		"Enter Person ID:",
-		"Person ID entered: ",
-		"Left door unlocked",
-		"Left door opened",
-		"Left door closed",
-		"Left door locked",
-		"Weight scan",
-		"Right door unlocked",
-		"Right door opened",
-		"Right door closed",
-		"Right door locked"
+	"Controller PID:",
+	"Ready for Entry\n",
+	"Person ID entered:",
+	"Left door unlocked\n",
+	"Left door opened\n",
+	"Left door closed\n",
+	"Left door locked\n",
+	"Weight scan\n",
+	"Right door unlocked\n",
+	"Right door opened\n",
+	"Right door closed\n",
+	"Right door locked\n"
 };
 
 const char *inMessage[NUM_INPUTS] = {
-		"ls",
-		"rs",
-		"glu",
-		"lo",
-		"lc",
-		"gll",
-		"ws",
-		"gru",
-		"ro",
-		"rc",
-		"grl"
+	"ls",
+	"rs",
+	"glu",
+	"lo",
+	"lc",
+	"gll",
+	"ws",
+	"gru",
+	"ro",
+	"rc",
+	"grl"
 };
 
 
