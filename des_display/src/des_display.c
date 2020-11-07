@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/neutrino.h>
+#include <process.h>
 #include "../../des_controller/src/des_mva.h"
 
 int main(void) {
-	send_t = msg_received;
-	resposne_t = response;
-	int chid = ChannelCreate(0);
+	send_t msg_received;
+	response_t response;
+	int chid;
 	int rcvid;
 
-	if(chid < 0) {
+	if((chid = ChannelCreate(0)) == -1) {
+		printf("Error creating channel.");
 		return EXIT_FAILURE;
 	}
 
@@ -18,10 +20,16 @@ int main(void) {
 
 	while(1){
 //		Call MsgReceive() to receive Display object from controller
-		rcvid = MsgReceive(chid, &msg_received, size_of(send_t), NULL);
+		if((rcvid = MsgReceive(chid, &msg_received, sizeof(send_t), NULL)) == -1){
+			printf("Error receiving message from controller.");
+			return EXIT_FAILURE;
+		}
 
 //		Call MsgReply(), sending EOK back to the controller
-		MsgReply(rcvid, input, &response, size_of(response_t));
+		if(MsgReply(rcvid, msg_received.input, &response, sizeof(response_t)) == -1){
+			printf("Unable to reply to message.");
+			return EXIT_FAILURE;
+		}
 
 //		IF message == ID_SCAN THEN
 		if(msg_received.input == LEFT_SCAN || msg_received.input == RIGHT_SCAN){
