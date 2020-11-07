@@ -1,12 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <sys/neutrino.h>
 #include "./des_mva.h"
 
 int main(void) {
 
-	enum State state = START_STATE;
+	enum State state = READY_STATE;
+	send_t msg_send;
+	response_t msg_receive;
+	int coid;
+	int rcvid;
+
+	coid = ConnectAttach(ND_LOCAL_NODE, controller_pid, 1, _NTO_SIDE_CHANNEL, 0);
+	int chid = ChannelCreate(0);
 
 	while(1) {
+
+		rcvid = MsgReceive(chid, &msg_received, size_of(send_t), NULL);
 		switch(state) {
 		case READY_STATE:
 			 break;

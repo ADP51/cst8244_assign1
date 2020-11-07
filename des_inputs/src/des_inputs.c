@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
 
 	controller_pid = atoi(argv[1]);
 
-	coid = ConnectAttach(ND_LOCAL_NODE, controller_pid, 1, _NTO_SIDE_CHANNEL, 0);
+	coid = ConnectAttach(ND_LOCAL_NODE, controller_pid, 2, _NTO_SIDE_CHANNEL, 0);
 	if (coid == -1) {
 		printf("ConnectAttach failed.\n");
 		return EXIT_FAILURE;

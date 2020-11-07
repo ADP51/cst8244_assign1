@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <sys/neutrino.h>
 #include "../../des_controller/src/des_mva.h"
 
 int main(void) {
 	send_t = msg_received;
 	resposne_t = response;
 	int chid = ChannelCreate(0);
+	int rcvid;
 
 	if(chid < 0) {
 		return EXIT_FAILURE;
