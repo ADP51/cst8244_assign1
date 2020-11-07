@@ -127,8 +127,15 @@ int main(void) {
 				state = READY_STATE;
 			}
 			break;
+		case EXIT:
+			ChannelDestroy(chid);
+			return EXIT_SUCCESS;
 		}
 
 		MsgSend(coid, &msg_received, sizeof(send_t), &response, sizeof(response_t));
 	}
+
+	ChannelDestroy(chid);
+	return EXIT_SUCCESS;
+
 }
