@@ -1,7 +1,7 @@
 #ifndef DES_MVA_H_
 #define DES_MVA_H_
 
-#define NUM_STATES 21
+#define NUM_STATES 20
 typedef enum {
 	READY_STATE = 0,
 	WEIGHT_SCAN_STATE = 1,
@@ -25,7 +25,7 @@ typedef enum {
 	LEAVE_LEFT_CLOSE_STATE = 19,
 } State;
 
-#define NUM_INPUTS 11
+#define NUM_INPUTS 12
 typedef enum {
 	LEFT_SCAN = 0,
 	RIGHT_SCAN = 1,
@@ -39,7 +39,7 @@ typedef enum {
 	RIGHT_CLOSE = 9,
 	GUARD_RIGHT_LOCK = 10,
 	EXIT = 11
-} Input_t;
+} input_t;
 
 #define NUM_OUTPUTS 12
 typedef enum {
@@ -72,7 +72,7 @@ struct response {
 }typedef response_t;
 
 struct send {
-	struct input_t input;
+	input_t input;
 	int weight;
 	int person_id;
 }typedef send_t;
