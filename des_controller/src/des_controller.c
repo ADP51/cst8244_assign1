@@ -34,11 +34,9 @@ int main(int argc, char **argv) {
 
 	while(1) {
 
-		rcvid = MsgReceive(chid, &msg_received, sizeof(send_t), NULL);
-
-		if(msg_received.input == EXIT) {
-			ChannelDestroy(chid);
-			return EXIT_SUCCESS;
+		if((rcvid = MsgReceive(chid, &msg_received, sizeof(send_t), NULL)) == -1){
+			printf("Could not receive message from inputs.");
+			return EXIT_FAILURE;
 		}
 
 		switch(state) {
@@ -142,6 +140,15 @@ int main(int argc, char **argv) {
 		}
 
 		MsgSend(coid, &msg_received, sizeof(send_t), &response, sizeof(response_t));
+
+		if(state != EXIT){
+			MsgReply(rcvid, EOK, &response, sizeof(response_t));
+		} else {
+			break;
+		}
 	}
 
+	ConnectDetach(coid);
+	ChannelDestroy(chid);
+	return EXIT_SUCCESS;
 }

@@ -26,7 +26,7 @@ int main(void) {
 		}
 
 //		Call MsgReply(), sending EOK back to the controller
-		if(MsgReply(rcvid, msg_received.input, &response, sizeof(response_t)) == -1){
+		if(MsgReply(rcvid, EOK, &response, sizeof(response_t)) == -1){
 			printf("Unable to reply to message.");
 			return EXIT_FAILURE;
 		}
