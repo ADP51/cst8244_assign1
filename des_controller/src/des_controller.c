@@ -1,23 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <pthread.h>
+#include <sys/netmgr.h>
 #include <sys/neutrino.h>
 #include "./des_mva.h"
 
-int main(void) {
+int main(int argc, char **argv) {
 
-	enum State state = READY_STATE;
+	State state = READY_STATE;
 	send_t msg_received;
 	response_t response;
+	pid_t display_pid;
 	int coid;
+	int chid;
 	int rcvid;
 
-	coid = ConnectAttach(ND_LOCAL_NODE, controller_pid, 1, _NTO_SIDE_CHANNEL, 0);
-	int chid = ChannelCreate(0);
+	if (argc != 2) {
+		perror("Incorrect number of command line args");
+		return EXIT_FAILURE;
+	}
+
+	display_pid = atoi(argv[1]);
+
+	coid = ConnectAttach(ND_LOCAL_NODE, display_pid, 1, _NTO_SIDE_CHANNEL, 0);
+
+	if((chid = ChannelCreate(0)) == -1) {
+		printf("Error creating channel.");
+		return EXIT_FAILURE;
+	}
+
+	printf("Controller PID: %d", pthread_self());
 
 	while(1) {
 
-		rcvid = MsgReceive(chid, &msg_received, size_of(send_t), NULL);
+		rcvid = MsgReceive(chid, &msg_received, sizeof(send_t), NULL);
+
+		if(msg_received.input == EXIT) {
+			ChannelDestroy(chid);
+			return EXIT_SUCCESS;
+		}
 
 		switch(state) {
 		case READY_STATE:
@@ -42,19 +64,9 @@ int main(void) {
 				state = ENTER_LEFT_OPEN_STATE;
 			}
 			break;
-		case ENTER_RIGHT_UNLOCK_STATE:
-			if(msg_received.input == RIGHT_OPEN) {
-				state = ENTER_RIGHT_OPEN_STATE;
-			}
-			break;
 		case ENTER_LEFT_OPEN_STATE:
 			if(msg_received.input == WEIGHT_SCAN) {
 				state = ENTER_WEIGHTSCAN_STATE;
-			}
-			break;
-		case ENTER_RIGHT_OPEN_STATE:
-			if(msg_received.input == RIGHT_CLOSE) {
-				state = ENTER_RIGHT_CLOSE_STATE;
 			}
 			break;
 		case ENTER_WEIGHTSCAN_STATE:
@@ -127,15 +139,9 @@ int main(void) {
 				state = READY_STATE;
 			}
 			break;
-		case EXIT:
-			ChannelDestroy(chid);
-			return EXIT_SUCCESS;
 		}
 
 		MsgSend(coid, &msg_received, sizeof(send_t), &response, sizeof(response_t));
 	}
-
-	ChannelDestroy(chid);
-	return EXIT_SUCCESS;
 
 }
