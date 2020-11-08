@@ -41,8 +41,8 @@ int main(int argc, char *argv[]) {
 			}
 			if(strcmp(input, "ws") == 0){
 				printf("Enter your weight:\n");
-				scanf("%d", &weight);
-				printf("Weight entered: %d\n", weight);
+				scanf("%f", &weight);
+				printf("Weight entered: %f\n", weight);
 				msg_send.weight = weight;
 				msg_send.input = WEIGHT_SCAN;
 			}
