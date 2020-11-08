@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
 	char input[10];
 	int person_id;
-	int weight;
+	float weight;
 
 	if (argc != 2) {
 		perror("Incorrect number of command line args");
