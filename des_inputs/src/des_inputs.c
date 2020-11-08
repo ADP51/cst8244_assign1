@@ -36,46 +36,36 @@ int main(int argc, char *argv[]) {
 			if(strcmp(input, "ls") == 0 || strcmp(input, "rs") == 0) {
 				printf("Enter your ID: \n");
 				scanf("%d", &person_id);
-				printf("ID scanned: %d\n", person_id);
 				msg_send.person_id = person_id;
 			}
 			if(strcmp(input, "ws") == 0){
 				printf("Enter your weight:\n");
 				scanf("%f", &weight);
-				printf("Weight entered: %f\n", weight);
 				msg_send.weight = weight;
 				msg_send.input = WEIGHT_SCAN;
 			}
 			if(strcmp(input, "lo") == 0){
-				printf("Left door open.\n");
 				msg_send.input = LEFT_OPEN;
 			}
 			if(strcmp(input, "ro") == 0){
-				printf("Right door open.\n");
 				msg_send.input = RIGHT_OPEN;
 			}
 			if(strcmp(input, "lc") == 0){
-				printf("Left door closed.\n");
 				msg_send.input = LEFT_CLOSE;
 			}
 			if(strcmp(input, "rc") == 0){
-				printf("Right door closed.\n");
 				msg_send.input = RIGHT_CLOSE;
 			}
 			if(strcmp(input, "glu") == 0){
-				printf("Left door unlocked.\n");
 				msg_send.input = GUARD_LEFT_UNLOCK;
 			}
 			if(strcmp(input, "gll") == 0){
-				printf("Left door locked.\n");
 				msg_send.input = GUARD_LEFT_LOCK;
 			}
 			if(strcmp(input, "gru") == 0){
-				printf("Right door unlocked.\n");
 				msg_send.input = GUARD_RIGHT_UNLOCK;
 			}
 			if(strcmp(input, "grl") == 0){
-				printf("Right door locked.\n");
 				msg_send.input = GUARD_RIGHT_LOCK;
 			}
 			if(strcmp(input, "exit") == 0){

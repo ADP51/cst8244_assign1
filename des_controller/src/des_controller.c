@@ -45,28 +45,16 @@ int main(int argc, char **argv) {
 			 break;
 		case LEFT_SCAN_STATE:
 			if(msg_received.input == GUARD_LEFT_UNLOCK) {
-//				if(MsgSend(coid, &msg_received, sizeof(msg_received), &response, sizeof(response_t)) == -1){
-//					printf("Unable to send message to input.");
-//					return EXIT_FAILURE;
-//				}
 				state = LEFT_UNLOCK_STATE;
 			}
 			break;
 		case RIGHT_SCAN_STATE:
 			if(msg_received.input == GUARD_RIGHT_UNLOCK) {
-//				if(MsgSend(coid, &msg_received, sizeof(msg_received), &response, sizeof(response_t)) == -1){
-//					printf("Unable to send message to input.");
-//					return EXIT_FAILURE;
-//				}
 				state = RIGHT_UNLOCK_STATE;
 			}
 			break;
 		case LEFT_UNLOCK_STATE:
 			if(msg_received.input == LEFT_OPEN) {
-//				if(MsgSend(coid, &msg_received, sizeof(msg_received), &response, sizeof(response_t)) == -1){
-//					printf("Unable to send message to input.");
-//					return EXIT_FAILURE;
-//				}
 				state = LEFT_OPEN_STATE;
 			}
 			break;
@@ -105,7 +93,6 @@ int main(int argc, char **argv) {
 				state = RIGHT_LOCK_STATE;
 			}
 			break;
-
 		case RIGHT_LOCK_STATE:
 			if(msg_received.input == GUARD_RIGHT_LOCK){
 				state = READY_STATE;
@@ -123,6 +110,8 @@ int main(int argc, char **argv) {
 		if(state != EXIT_STATE){
 			MsgReply(rcvid, EOK, &response, sizeof(response_t));
 		} else {
+			ConnectDetach(coid);
+			ChannelDestroy(chid);
 			break;
 		}
 	}
