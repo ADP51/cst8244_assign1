@@ -28,15 +28,22 @@ int main(int argc, char *argv[]) {
 		printf("ConnectAttach failed.\n");
 		return EXIT_FAILURE;
 	}
+
+	printf("Enter the event type (ls=left scan, rs=right scan, ws=weight scale, lo=left open, ro=right open, lc=left closed, "
+			"rc=right closed, gru=guard right unlock, grl=guard right lock, gll=guard left lock, glu=guard left unlock)\n");
+
 	while(1){
-			printf("Enter the event type (ls=left scan, rs=right scan, ws=weight scale, lo=left open, ro=right open, lc=left closed, "
-					"rc=right closed, gru=guard right unlock, grl=guard right lock, gll=guard left lock, glu=guard left unlock)\n");
 			scanf(" %s", input);
 
 			if(strcmp(input, "ls") == 0 || strcmp(input, "rs") == 0) {
 				printf("Enter your ID: \n");
 				scanf("%d", &person_id);
 				msg_send.person_id = person_id;
+				if(strcmp(input, "ls") == 0) {
+					msg_send.input = LEFT_SCAN;
+				} else {
+					msg_send.input = RIGHT_SCAN;
+				}
 			}
 			if(strcmp(input, "ws") == 0){
 				printf("Enter your weight:\n");
@@ -70,11 +77,14 @@ int main(int argc, char *argv[]) {
 			}
 			if(strcmp(input, "exit") == 0){
 				printf("Exiting...");
-				msg_send.input = EXIT;
+				msg_send.input = EX_INPUT;
 				if(MsgSend(coid, &msg_send, sizeof(send_t), 0, 0) == -1){
-					printf("Unable to send message.");
+					printf("\nUnable to send message.\n");
+					ConnectDetach(coid);
 					return EXIT_FAILURE;
 				}
+
+				ConnectDetach(coid);
 				return EXIT_SUCCESS;
 			}
 
@@ -83,8 +93,8 @@ int main(int argc, char *argv[]) {
 				return EXIT_FAILURE;
 			}
 		}
-		ConnectDetach(coid);
 
+		ConnectDetach(coid);
 		return EXIT_SUCCESS;
 	}
 

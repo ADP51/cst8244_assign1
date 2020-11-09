@@ -1,21 +1,28 @@
 #ifndef DES_MVA_H_
 #define DES_MVA_H_
 
-#define NUM_STATES 13
+#define NUM_STATES 20
 typedef enum {
 	READY_STATE = 0,
 	LEFT_SCAN_STATE = 1,
 	RIGHT_SCAN_STATE = 2,
-	WEIGHT_SCAN_STATE = 3,
-	LEFT_OPEN_STATE = 4,
-	RIGHT_OPEN_STATE = 5,
-	LEFT_CLOSE_STATE = 6,
-	RIGHT_CLOSE_STATE = 7,
-	LEFT_LOCK_STATE = 8,
-	RIGHT_LOCK_STATE = 9,
-	LEFT_UNLOCK_STATE = 10,
-	RIGHT_UNLOCK_STATE = 11,
-	EXIT_STATE = 12
+	ENTER_LEFT_UNLOCK_STATE = 3,
+	ENTER_RIGHT_UNLOCK_STATE = 4,
+	ENTER_LEFT_OPEN_STATE = 5,
+	ENTER_RIGHT_OPEN_STATE = 6,
+	ENTER_WEIGHTSCAN_STATE = 7,
+	ENTER_LEFT_CLOSE_STATE = 8,
+	ENTER_LEFTLOCK_STATE = 9,
+	ENTER_RIGHT_CLOSE_STATE = 10,
+	LEAVE_RIGHT_UNLOCK_STATE = 11,
+	LEAVE_RIGHT_OPEN_STATE = 12,
+	LEAVE_WEIGHTSCAN_STATE = 13,
+	LEAVE_RIGHT_CLOSE_STATE = 14,
+	LEAVE_RIGHTLOCK_STATE = 15,
+	LEAVE_LEFT_UNLOCK_STATE = 16,
+	LEAVE_LEFT_OPEN_STATE = 17,
+	LEAVE_LEFT_CLOSE_STATE = 18,
+	EXIT_STATE = 19
 } State;
 
 #define NUM_INPUTS 12
@@ -31,37 +38,37 @@ typedef enum {
 	RIGHT_OPEN = 8,
 	RIGHT_CLOSE = 9,
 	GUARD_RIGHT_LOCK = 10,
-	EXIT = 11
+	EX_INPUT = 11
 } input_t;
 
 #define NUM_OUTPUTS 12
 typedef enum {
 	READY_MSG = 0,
-	LEFT_SCAN_MSG = 1,
-	RIGHT_SCAN_MSG = 2,
-	LEFT_UNLOCK_MSG = 3,
-	LEFT_OPEN_MSG = 4,
+	SCAN_MSG = 1,
+	WEIGHT_SCAN_MSG= 2,
+	LEFT_OPEN_MSG = 3,
+	RIGHT_OPEN_MSG = 4,
 	LEFT_CLOSE_MSG = 5,
-	LEFT_LOCK_MSG = 6,
-	WEIGHT_SCAN_MSG = 7,
+	RIGHT_CLOSE_MSG = 6,
+	LEFT_UNLOCK_MSG = 7,
 	RIGHT_UNLOCK_MSG = 8,
-	RIGHT_OPEN_MSG = 9,
-	RIGHT_CLOSE_MSG = 10,
-	RIGHT_LOCK_MSG = 11,
+	RIGHT_LOCK_MSG = 9,
+	LEFT_LOCK_MSG = 10,
+	EXIT_MSG = 11
 } Output_t;
 
 const char *outMessage[NUM_OUTPUTS] = {
-		"Controller PID: "
+		"Controller PID: ",
 		"Person scanned ID. ID: ",
 		"Person weighed. Weight: ",
 		"Left door Open.",
 		"Right door Open.",
 		"Left door Closed.",
 		"Right door Closed.",
-		"Right door locked by Guard. ",
-		"Right door unlocked by Guard. ",
-		"Left door locked by Guard. ",
 		"Left door unlocked by Guard. ",
+		"Right door unlocked by Guard. ",
+		"Right door locked by Guard. ",
+		"Left door locked by Guard. ",
 		"Exiting Door Entry System..."
 };
 

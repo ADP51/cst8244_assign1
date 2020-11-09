@@ -1,19 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
-#include <sys/netmgr.h>
+#include <unistd.h>
 #include <sys/neutrino.h>
+#include <sys/netmgr.h>
+#include <errno.h>
 #include "./des_mva.h"
+
+State state = READY_STATE;
+send_t msg_received;
+response_t response;
+pid_t display_pid;
+int coid;
+int chid;
+int rcvid;
+
 
 int main(int argc, char **argv) {
 
-	State state = READY_STATE;
-	send_t msg_received;
-	response_t response;
-	pid_t display_pid;
-	int coid;
-	int chid;
-	int rcvid;
 
 	if (argc != 2) {
 		perror("Incorrect number of command line args");
@@ -29,7 +32,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	printf("%s %d\n", outMessage[state], getpid());
+	printf("Controller PID: %d\n", getpid());
 
 	while(1) {
 
@@ -38,79 +41,124 @@ int main(int argc, char **argv) {
 			return EXIT_FAILURE;
 		}
 
+		if(msg_received.input == EX_INPUT) {
+			state = EXIT_STATE;
+		}
+
 		switch(state) {
+		case READY_STATE:
+			if(msg_received.input == LEFT_SCAN) {
+				state = LEFT_SCAN_STATE;
+			} else if (msg_received.input == RIGHT_SCAN) {
+				state = RIGHT_SCAN_STATE;
+			}
+			 break;
 		case LEFT_SCAN_STATE:
 			if(msg_received.input == GUARD_LEFT_UNLOCK) {
-				state = LEFT_UNLOCK_STATE;
+				state = ENTER_LEFT_UNLOCK_STATE;
 			}
 			break;
 		case RIGHT_SCAN_STATE:
 			if(msg_received.input == GUARD_RIGHT_UNLOCK) {
-				state = RIGHT_UNLOCK_STATE;
+				state = LEAVE_RIGHT_UNLOCK_STATE;
 			}
 			break;
-		case LEFT_UNLOCK_STATE:
+		case ENTER_LEFT_UNLOCK_STATE:
 			if(msg_received.input == LEFT_OPEN) {
-				state = LEFT_OPEN_STATE;
+				state = ENTER_LEFT_OPEN_STATE;
 			}
 			break;
-		case LEFT_OPEN_STATE:
+		case ENTER_LEFT_OPEN_STATE:
 			if(msg_received.input == WEIGHT_SCAN) {
-				state = WEIGHT_SCAN_STATE;
+				state = ENTER_WEIGHTSCAN_STATE;
 			}
 			break;
-		case WEIGHT_SCAN_STATE:
+		case ENTER_WEIGHTSCAN_STATE:
 			if(msg_received.input == LEFT_CLOSE) {
-				state = LEFT_CLOSE_STATE;
+				state = ENTER_LEFT_CLOSE_STATE;
 			}
 			break;
-		case LEFT_CLOSE_STATE:
+		case ENTER_LEFT_CLOSE_STATE:
 			if(msg_received.input == GUARD_LEFT_LOCK) {
-				state = LEFT_LOCK_STATE;
+				state = ENTER_LEFTLOCK_STATE;
 			}
 			break;
-		case LEFT_LOCK_STATE:
+		case ENTER_LEFTLOCK_STATE:
 			if(msg_received.input == GUARD_RIGHT_UNLOCK) {
-				state = RIGHT_UNLOCK_STATE;
+				state = ENTER_RIGHT_UNLOCK_STATE;
 			}
 			break;
-		case RIGHT_UNLOCK_STATE:
+		case ENTER_RIGHT_UNLOCK_STATE:
 			if(msg_received.input == RIGHT_OPEN) {
-				state = RIGHT_OPEN_STATE;
+				state = ENTER_RIGHT_OPEN_STATE;
 			}
 			break;
-		case RIGHT_OPEN_STATE:
+		case ENTER_RIGHT_OPEN_STATE:
 			if(msg_received.input == RIGHT_CLOSE) {
-				state = RIGHT_CLOSE_STATE;
+				state = ENTER_RIGHT_CLOSE_STATE;
 			}
 			break;
-		case RIGHT_CLOSE_STATE:
+		case ENTER_RIGHT_CLOSE_STATE:
 			if(msg_received.input == GUARD_RIGHT_LOCK) {
-				state = RIGHT_LOCK_STATE;
+				state = READY_STATE;
 			}
 			break;
-		case RIGHT_LOCK_STATE:
-			if(msg_received.input == GUARD_RIGHT_LOCK){
+		case LEAVE_RIGHT_UNLOCK_STATE:
+			if(msg_received.input == RIGHT_OPEN) {
+				state = LEAVE_RIGHT_OPEN_STATE;
+			}
+			break;
+		case LEAVE_RIGHT_OPEN_STATE:
+			if(msg_received.input == WEIGHT_SCAN) {
+				state = LEAVE_WEIGHTSCAN_STATE;
+			}
+			break;
+		case LEAVE_WEIGHTSCAN_STATE:
+			if(msg_received.input == RIGHT_CLOSE) {
+				state = LEAVE_RIGHT_CLOSE_STATE;
+			}
+			break;
+		case LEAVE_RIGHT_CLOSE_STATE:
+			if(msg_received.input == GUARD_RIGHT_LOCK) {
+				state = LEAVE_RIGHTLOCK_STATE;
+			}
+			break;
+		case LEAVE_RIGHTLOCK_STATE:
+			if(msg_received.input == GUARD_LEFT_UNLOCK) {
+				state = LEAVE_LEFT_UNLOCK_STATE;
+			}
+			break;
+		case LEAVE_LEFT_UNLOCK_STATE:
+			if(msg_received.input == LEFT_OPEN) {
+				state = LEAVE_LEFT_OPEN_STATE;
+			}
+			break;
+		case LEAVE_LEFT_OPEN_STATE:
+			if(msg_received.input == LEFT_CLOSE) {
+				state = LEAVE_LEFT_CLOSE_STATE;
+			}
+			break;
+		case LEAVE_LEFT_CLOSE_STATE:
+			if(msg_received.input == GUARD_LEFT_LOCK) {
 				state = READY_STATE;
 			}
 			break;
 		case EXIT_STATE:
-			if(msg_received.input == EXIT){
-				state = EXIT_STATE;
-			}
-			break;
+			MsgSend(coid, &msg_received, sizeof(send_t), &response, sizeof(response_t));
+			ConnectDetach(coid);
+			ChannelDestroy(chid);
+			return EXIT_SUCCESS;
 		}
 
 		MsgSend(coid, &msg_received, sizeof(send_t), &response, sizeof(response_t));
 
-		if(state != EXIT_STATE){
-			MsgReply(rcvid, EOK, &response, sizeof(response_t));
-		} else {
-			break;
+		MsgReply(rcvid, EOK, &response, sizeof(response_t));
+
+		if(state == EXIT_STATE){
+			ConnectDetach(coid);
+			ChannelDestroy(chid);
+			return EXIT_SUCCESS;
 		}
 	}
 
-	ConnectDetach(coid);
-	ChannelDestroy(chid);
-	return EXIT_SUCCESS;
 }
