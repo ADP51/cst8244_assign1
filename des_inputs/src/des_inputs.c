@@ -1,3 +1,13 @@
+/******************
+ * Filename: des_inputs.c
+ * Date: November 9, 2020
+ * Course: CST8244 Real-Time Programming
+ * Author: Andrew Palmer, Karim Tahan
+ * Functions: int main(int argc, char *argv[])
+ *
+ * Prompts the user for a command and sends the input to des_controller.
+ *****************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <process.h>

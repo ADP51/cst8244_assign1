@@ -1,3 +1,15 @@
+/******************
+ * Filename: des_controller.c
+ * Date: November 9, 2020
+ * Course: CST8244 Real-Time Programming
+ * Author: Andrew Palmer, Karim Tahan
+ * Functions: int main(int argc, char **argv)
+ *
+ * Sets states according to the input received from des_inputs.
+ * When states are set, a message is sent to des_display to display a message showing the current state.
+ *****************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

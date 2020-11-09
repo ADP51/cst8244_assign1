@@ -1,6 +1,17 @@
+/******************
+ * Filename: des_mva.h
+ * Date: November 9, 2020
+ * Course: CST8244 Real-Time Programming
+ * Author: Andrew Palmer, Karim Tahan
+ *
+ * Contains lists of transitions, states, in and out messages, the response and send structs.
+ *****************/
+
+
 #ifndef DES_MVA_H_
 #define DES_MVA_H_
 
+// State transitions
 #define NUM_STATES 20
 typedef enum {
 	READY_STATE = 0,
@@ -25,6 +36,7 @@ typedef enum {
 	EXIT_STATE = 19
 } State;
 
+// Possible states
 #define NUM_INPUTS 12
 typedef enum {
 	LEFT_SCAN = 0,
@@ -41,6 +53,7 @@ typedef enum {
 	EX_INPUT = 11
 } input_t;
 
+// State message indexes
 #define NUM_OUTPUTS 12
 typedef enum {
 	READY_MSG = 0,
@@ -57,6 +70,7 @@ typedef enum {
 	EXIT_MSG = 11
 } Output_t;
 
+// Messages to be output to des_display
 const char *outMessage[NUM_OUTPUTS] = {
 		"Controller PID: ",
 		"Person scanned ID. ID: ",
@@ -72,11 +86,8 @@ const char *outMessage[NUM_OUTPUTS] = {
 		"Exiting Door Entry System..."
 };
 
-const char *inMessage[NUM_INPUTS] = { "ls", "rs", "glu", "lo", "lc", "gll",
-		"ws", "gru", "ro", "rc", "grl", "exit" };
-
 struct response {
-	int statusCode; // [OK, UNDEFINED, INVALID_OPERATOR, OVERFLOW]
+	int statusCode;
 	char errorMsg[128];
 }typedef response_t;
 

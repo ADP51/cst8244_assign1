@@ -1,3 +1,13 @@
+/******************
+ * Filename: des_display.c
+ * Date: November 9, 2020
+ * Course: CST8244 Real-Time Programming
+ * Author: Andrew Palmer, Karim Tahan
+ * Functions: int main(void)
+ *
+ * Receives message from des_controller and displays messages according to the input sent by the user.
+ *****************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -64,7 +74,7 @@ int main(void) {
 			printf("%s\n", outMessage[msg_received.input]);
 		}
 
-		if (msg_received.input == 11) { //IF message == EXIT THEN
+		if (msg_received.input == EX_INPUT) { //IF message == EXIT THEN
 			break;
 		}
 
