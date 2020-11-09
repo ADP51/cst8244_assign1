@@ -50,11 +50,20 @@ typedef enum {
 	RIGHT_LOCK_MSG = 11,
 } Output_t;
 
-const char *outMessage[NUM_OUTPUTS] = { "Ready for Entry\n",
-		"Person ID entered:", "Person ID Leaving:", "Left door unlocked\n", "Left door opened\n",
-		"Left door closed\n", "Left door locked\n", "Weight scan\n",
-		"Right door unlocked\n", "Right door opened\n", "Right door closed\n",
-		"Right door locked\n" };
+const char *outMessage[NUM_OUTPUTS] = {
+		"Controller PID: "
+		"Person scanned ID. ID: ",
+		"Person weighed. Weight: ",
+		"Left door Open.",
+		"Right door Open.",
+		"Left door Closed.",
+		"Right door Closed.",
+		"Right door locked by Guard. ",
+		"Right door unlocked by Guard. ",
+		"Left door locked by Guard. ",
+		"Left door unlocked by Guard. ",
+		"Exiting Door Entry System..."
+};
 
 const char *inMessage[NUM_INPUTS] = { "ls", "rs", "glu", "lo", "lc", "gll",
 		"ws", "gru", "ro", "rc", "grl", "exit" };

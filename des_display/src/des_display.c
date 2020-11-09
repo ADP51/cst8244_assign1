@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
+#include <unistd.h>
 #include <sys/neutrino.h>
-#include <process.h>
+#include <sys/netmgr.h>
+#include <errno.h>
 #include "../../des_controller/src/des_mva.h"
 
 int main(void) {

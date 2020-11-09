@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <pthread.h>
 #include <sys/netmgr.h>
 #include <sys/neutrino.h>
 #include "./des_mva.h"
@@ -30,7 +29,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	printf("Controller PID: %d", pthread_self());
+	printf("%s %d\n", outMessage[state], getpid());
 
 	while(1) {
 
@@ -40,9 +39,6 @@ int main(int argc, char **argv) {
 		}
 
 		switch(state) {
-		case READY_STATE:
-			 state = RIGHT_LOCK_STATE;
-			 break;
 		case LEFT_SCAN_STATE:
 			if(msg_received.input == GUARD_LEFT_UNLOCK) {
 				state = LEFT_UNLOCK_STATE;
@@ -110,8 +106,6 @@ int main(int argc, char **argv) {
 		if(state != EXIT_STATE){
 			MsgReply(rcvid, EOK, &response, sizeof(response_t));
 		} else {
-			ConnectDetach(coid);
-			ChannelDestroy(chid);
 			break;
 		}
 	}
