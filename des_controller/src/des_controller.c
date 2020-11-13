@@ -28,16 +28,9 @@ int coid;
 int rcvid;
 int sendMsg;
 
-int main(int argc, char **argv) {
+int main(void) {
 
-	if (argc != 2) {
-		perror("Incorrect number of command line args");
-		return EXIT_FAILURE;
-	}
-
-	display_pid = atoi(argv[1]);
-
-	if ((coid = name_open(ATTACH_POINT_CONTROLLER, 0)) == -1) {
+	if ((coid = name_open(NAME_ATTACH_DISPLAY, 0)) == -1) {
 		perror("name_open failed.");
 		return EXIT_FAILURE;
 	}

@@ -24,20 +24,13 @@ response_t msg_receive;
 pid_t controller_pid;
 int coid;
 
-int main(int argc, char *argv[]) {
+int main(void) {
 
 	char input[10];
 	int person_id;
 	float weight;
 
-	if (argc != 2) {
-		perror("Incorrect number of command line args");
-		return EXIT_FAILURE;
-	}
-
-	controller_pid = atoi(argv[1]);
-
-    if ((coid = name_open(ATTACH_POINT_CONTROLLER, 0)) == -1) {
+    if ((coid = name_open(NAME_ATTACH_CONTROLLER, 0)) == -1) {
     	perror("name_open failed.");
         return EXIT_FAILURE;
     }
