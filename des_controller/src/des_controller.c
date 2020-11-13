@@ -9,21 +9,22 @@
  * When states are set, a message is sent to des_display to display a message showing the current state.
  *****************/
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/neutrino.h>
 #include <sys/netmgr.h>
 #include <errno.h>
+#include <sys/iofunc.h>
+#include <sys/dispatch.h>
 #include "./des_mva.h"
 
 State state = READY_STATE;
 send_t msg_received;
 response_t response;
 pid_t display_pid;
+name_attach_t *attach;
 int coid;
-int chid;
 int rcvid;
 int sendMsg;
 
@@ -36,10 +37,12 @@ int main(int argc, char **argv) {
 
 	display_pid = atoi(argv[1]);
 
-	coid = ConnectAttach(ND_LOCAL_NODE, display_pid, 1, _NTO_SIDE_CHANNEL, 0);
+	if ((coid = name_open(ATTACH_POINT_CONTROLLER, 0)) == -1) {
+		perror("name_open failed.");
+		return EXIT_FAILURE;
+	}
 
-	if ((chid = ChannelCreate(0)) == -1) {
-		printf("Error creating channel.");
+	if ((attach = name_attach(NULL, NAME_ATTACH_CONTROLLER, 0)) == NULL) {
 		return EXIT_FAILURE;
 	}
 
@@ -49,8 +52,8 @@ int main(int argc, char **argv) {
 
 		sendMsg = 0;
 
-		if ((rcvid = MsgReceive(chid, &msg_received, sizeof(send_t), NULL))
-				== -1) {
+		if ((rcvid = MsgReceive(attach->chid, &msg_received, sizeof(send_t),
+				NULL)) == -1) {
 			printf("Could not receive message from inputs.");
 			return EXIT_FAILURE;
 		}
@@ -181,8 +184,8 @@ int main(int argc, char **argv) {
 			MsgSend(coid, &msg_received, sizeof(send_t), &response,
 					sizeof(response_t));
 			MsgReply(rcvid, EOK, &response, sizeof(response_t));
-			ConnectDetach(coid);
-			ChannelDestroy(chid);
+			name_close(coid);
+			name_detach(attach, 0);
 			return EXIT_SUCCESS;
 		}
 
@@ -194,8 +197,8 @@ int main(int argc, char **argv) {
 		MsgReply(rcvid, EOK, &response, sizeof(response_t));
 
 		if (state == EXIT_STATE) {
-			ConnectDetach(coid);
-			ChannelDestroy(chid);
+			name_close(coid);
+			name_detach(attach, 0);
 			return EXIT_SUCCESS;
 		}
 	}

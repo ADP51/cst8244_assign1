@@ -14,26 +14,28 @@
 #include <sys/neutrino.h>
 #include <sys/netmgr.h>
 #include <errno.h>
+#include <sys/iofunc.h>
+#include <sys/dispatch.h>
 #include "../../des_controller/src/des_mva.h"
 
 send_t msg_received;
 response_t response;
-int chid;
+name_attach_t *attach;
 int rcvid;
 
 
 int main(void) {
 
-	if ((chid = ChannelCreate(0)) == -1) {
-		printf("Error creating channel.");
-		return EXIT_FAILURE;
-	}
+
+   if ((attach = name_attach(NULL, NAME_ATTACH_DISPLAY, 0)) == NULL) {
+	   return EXIT_FAILURE;
+   }
 
 	printf("Display's PID: %d\n", getpid());
 
 	while (1) {
 //		Call MsgReceive() to receive Display object from controller
-		if ((rcvid = MsgReceive(chid, &msg_received, sizeof(send_t), NULL))
+		if ((rcvid = MsgReceive(attach->chid, &msg_received, sizeof(send_t), NULL))
 				== -1) {
 			printf("Error receiving message from controller.");
 			return EXIT_FAILURE;
@@ -80,7 +82,7 @@ int main(void) {
 
 	}
 
-	ChannelDestroy(chid);
+	name_detach(attach, 0);
 	return EXIT_SUCCESS;
 
 }

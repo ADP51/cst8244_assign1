@@ -14,6 +14,8 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/neutrino.h>
+#include <sys/iofunc.h>
+#include <sys/dispatch.h>
 #include <sys/netmgr.h>
 #include "../../des_controller/src/des_mva.h"
 
@@ -35,11 +37,10 @@ int main(int argc, char *argv[]) {
 
 	controller_pid = atoi(argv[1]);
 
-	if ((coid = ConnectAttach(ND_LOCAL_NODE, controller_pid, 2,
-			_NTO_SIDE_CHANNEL, 0)) == -1) {
-		printf("ConnectAttach failed.\n");
-		return EXIT_FAILURE;
-	}
+    if ((coid = name_open(ATTACH_POINT_CONTROLLER, 0)) == -1) {
+    	perror("name_open failed.");
+        return EXIT_FAILURE;
+    }
 
 		printf(
 				"Enter the event type (ls=left scan, rs=right scan, ws=weight scale, lo=left open, ro=right open, lc=left closed, "
@@ -93,11 +94,11 @@ int main(int argc, char *argv[]) {
 			msg_send.input = EX_INPUT;
 			if (MsgSend(coid, &msg_send, sizeof(send_t), 0, 0) == -1) {
 				printf("\nUnable to send message.\n");
-				ConnectDetach(coid);
+				name_close(coid);
 				return EXIT_FAILURE;
 			}
 
-			ConnectDetach(coid);
+			name_close(coid);
 			return EXIT_SUCCESS;
 		}
 
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	ConnectDetach(coid);
+	name_close(coid);
 	return EXIT_SUCCESS;
 }
 

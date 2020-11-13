@@ -11,6 +11,9 @@
 #ifndef DES_MVA_H_
 #define DES_MVA_H_
 
+#define NAME_ATTACH_DISPLAY "des_display"
+#define NAME_ATTACH_CONTROLLER "des_controller"
+
 // State transitions
 #define NUM_STATES 20
 typedef enum {
